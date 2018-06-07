@@ -1,0 +1,74 @@
+ function envioCambio($cod_trabajo) {
+
+	$tsql = "SELECT TBUSUARIOS.NOMBRE_COMPLETO AS NOMBRE, 
+					TBUSUARIOS.EMAIL AS EMAIL, 
+					TBTRABAJOS_SOLICITADOS.ESTADO_TP AS ESTADO,
+					tbCentrales.DESCRIPCION AS CENTRAL,
+					TBTRABAJOS_REVISADOS.REMEDY as REMEDY,
+					convert(char,tbTrabajos_Solicitados.FX_REGISTRO,103) as ALTA,
+					TBTRABAJOS_REVISADOS.COMENTARIOS as COMENTARIOS, 
+			IDENTIFICADOR FROM TBUSUARIOS 
+			LEFT JOIN TBTRABAJOS_SOLICITADOS ON TBUSUARIOS.COD_USUARIO = TBTRABAJOS_SOLICITADOS.COD_USUARIO_CARGA
+			LEFT JOIN TBTRABAJOS_SOLICITADOS ON tbCentrales.COD_CENTRAL = TBTRABAJOS_SOLICITADOS.COD_CENTRAL
+			LEFT JOIN TBTRABAJOS_REVISADOS ON tbTrabajos_Solicitados.COD_TRABAJO = TBTRABAJOS_REVISADOS.COD_TRABAJO 
+			WHERE TBTRABAJOS_SOLICITADOS.COD_TRABAJO = ".$cod_trabajo."";
+	$conn=conectar_bd();
+	$query = sqlsrv_query( $conn, $tsql);
+	$row = sqlsrv_fetch_array($query);
+	$nombre = $row['NOMBRE'];
+	$email= $row['EMAIL'];
+	$estado= $row['ESTADO'];
+	$central = $row['CENTRAL'];
+	$identificador= $row['IDENTIFICADOR'];
+	$remedy= $row['REMEDY'];
+	$alta = $row['ALTA'];
+	$observaciones = $row['OBSERVACIONES'];
+	sqlsrv_free_stmt($query);
+
+	$asunto="CAMBIO DE ESTADO DE TRABAJO ".$identificador." – CR ".$remedy." – ".$central;
+	if (strtoupper($estado)=="ANULADO") {
+		$cuerpo = '<html><head><title>Anulación de trabajo programado</title></head><body><h1 style="font-size: 14px;color: #ED7D31;font-weight: bold;font-family: "Calibri",sans-serif;">GESTION DE TRABAJOS SSR</h1>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">El trabajo solicitado con el <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">IDENTIFICADOR '.$identificado.'</b> dado de alta el día <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$alta'</b> por el usuario <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$nombre.'</b> ha cambiado al estado <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>ANULADO.</b></p>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Acción realizada por <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;"></b></p></body></html>';
+	}
+	elseif (strtoupper($estado)=="RECHAZADO") {
+		$cuerpo = '<html><head><title>Rechazo de trabajo programado</title></head><body><h1 style="font-size: 14px;color: #ED7D31;font-weight: bold;font-family: "Calibri",sans-serif;">GESTION DE TRABAJOS SSR</h1>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">El trabajo solicitado con el <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">IDENTIFICADOR '.$identificado.'</b> dado de alta el día <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$alta.'</b> por el usuario <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$nombre.'</b> ha cambiado al estado <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>RECHAZADO.</b></p>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Acción realizada por <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;"></b></p></body></html>';
+	}
+	elseif (strtoupper($estado)=="CANCELADO") {
+		$cuerpo = '<html><head><title>Cancelación de trabajo programado</title></head><body><h1 style="font-size: 14px;color: #ED7D31;font-weight: bold;font-family: "Calibri",sans-serif;">GESTION DE TRABAJOS SSR</h1>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">El trabajo solicitado con el <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">IDENTIFICADOR '.$identificado.'</b> dado de alta el día <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$alta.'</b> por el usuario <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$nombre.'</b> ha cambiado al estado <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>CANCELADO.</b></p>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Acción realizada por <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;"></b></p></body></html>';
+	}
+	elseif (strtoupper($estado)=="PENDIENTE INFO") {
+		$cuerpo = '<html><head><title>Solicitud de información</title></head><body><h1 style="font-size: 14px;color: #ED7D31;font-weight: bold;font-family: "Calibri",sans-serif;">GESTION DE TRABAJOS SSR</h1>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">El trabajo solicitado con el <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">IDENTIFICADOR '.$identificado.'</b> dado de alta el día <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$alta.'</b> por el usuario <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>'.$nombre.'</b> ha cambiado al estado <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;>PENDIENTE INFO.</b></p>';
+		$cuerpo .='<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Acción realizada por <b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">usuario</b></p>';
+		$cuerpo .='<b style="color: #404040;font-size: 11px;font-family: "Calibri",sans-serif;font-weight: bold;">OBSERVACIONES REALIZADAS:</b><br><p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">'.$observaciones.'</p></body></html>';
+	}
+
+	//para el envío en formato HTML 
+	$headers = "MIME-Version: 1.0\r\n"; 
+	$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
+
+	//dirección del remitente 
+	$headers .= "From: Notificación de solicitudes <ssr@jazztel.com>\r\n"; 
+
+	//ruta del mensaje desde origen a destino 
+	$headers .= "Return-path: ".$email."\r\n"; 
+
+	//direcciones que recibián copia 
+	$headers .= "Cc: frank.briceno@ext.jazztel.com\r\n"; 
+
+	//direcciones que recibirán copia oculta 
+//	$headers .= "Bcc: pepe@pepe.com,juan@juan.com\r\n"; 
+
+	mail($email,$asunto,$cuerpo,$headers); 
+	//$prueba = $email.'<br>'.$asunto.'<br>'.$cuerpo.'<br>'.$headers;
+	//return $prueba;
+
+	$tsql = "UPDATE TBHISTORICO_TRABAJOS SET CORREO_ENVIADO = 1 WHERE COD_TRABAJO = ".$cod_trabajo." AND UPPER(ESTADO_TP) IN ('ANULADO', 'RECHAZADO', 'CANCELADO', 'PENDIENTE INFO') AND CORREO_ENVIADO = 0";
+	$query = sqlsrv_query( $conn, $tsql);
+	sqlsrv_close( $conn);
+}
