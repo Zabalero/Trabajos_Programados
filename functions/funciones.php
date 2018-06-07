@@ -389,7 +389,7 @@ function Envio_Aceptado() {
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Hora de inicio aprobada:'.$row2["horaini"].'</p>';
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Fecha fin aprobada:'.$row2["fechafin"].'</p>';
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Hora fin aprobada:'.$row2["horafin"].'</p>';
-			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;"><a href="http://ftth-dst.jazztel.com/trabajos_programados/functions/genera_pdf.php?jobcode='.$row2['COD_TRABAJO'].'" target="_blank">Descargar PDF del trabajo</a></p><br>';
+			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;"><a href="http://10.118.247.229/trabajos_programados/functions/genera_pdf.php?jobcode='.$row2['COD_TRABAJO'].'" target="_blank">Descargar PDF del trabajo</a></p><br>';
 			$update = "UPDATE tbHistorico_Trabajos SET CORREO_ENVIADO = 1, COD_USUARIO = ".$_SESSION['privi']." WHERE COD_TRABAJO = ".$row2['COD_TRABAJO']." AND ESTADO_TP = 'Aceptado' AND CORREO_ENVIADO IS NULL";
 			$query3 = sqlsrv_query($conn,$update) or die ('fallo al intentar actualizar el historico'.$update);
 		}
@@ -405,7 +405,7 @@ function Envio_Aceptado() {
 	sqlsrv_free_stmt( $query);
 	sqlsrv_free_stmt( $query2);
 	sqlsrv_free_stmt( $query3);
-	header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=7');
+	header('Location: http://10.118.247.229/trabajos_programados/index.php?view=7');
 }
 
 //Envio_Aceptado();

@@ -184,9 +184,9 @@
 			sqlsrv_close( $conn);
 			}
 			else {
-				die ("Para registrar una solicitud debe completar los siguientes campos del fichero". $error . "<br><br><br><a href='http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=1' targe=_self>INTENTAR DE NUEVO</a>");
+				die ("Para registrar una solicitud debe completar los siguientes campos del fichero". $error . "<br><br><br><a href='http://10.118.247.229/trabajos_programados/index.php?view=1' targe=_self>INTENTAR DE NUEVO</a>");
 			}
-			header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=2');
+			header('Location: http://10.118.247.229/trabajos_programados/index.php?view=2');
 		}
 		if ($_REQUEST['org'] == 2) {
 			$tabla= "INSERT INTO tbTrabajos_Solicitados (IDENTIFICADOR,";
@@ -286,11 +286,11 @@
 			$newid=sqlsrv_get_field($query, 0);
 			sqlsrv_free_stmt( $query);
 			sqlsrv_close( $conn);
-			header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+			header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 				}
 
 			else {
-				echo "Para registrar una solicitud debe completar los siguientes campos del fichero". $error . "<br><br><br><a href='http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=1' targe=_self>INTENTAR DE NUEVO</a>";
+				echo "Para registrar una solicitud debe completar los siguientes campos del fichero". $error . "<br><br><br><a href='http://10.118.247.229/trabajos_programados/index.php?view=1' targe=_self>INTENTAR DE NUEVO</a>";
 			}
 
 
@@ -334,7 +334,7 @@
 		sqlsrv_free_stmt( $update);
 		sqlsrv_free_stmt( $insert);
 		sqlsrv_close( $conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 	
 	if ($accion === 'cancelar') { //PROCEDIMIENTO PARA CANCELAR, RECHAZAR O ANULAR SOLICITUDES
@@ -383,7 +383,7 @@
 		sqlsrv_free_stmt( $sql);
 		sqlsrv_free_stmt( $insert);
 		sqlsrv_close( $conn);
-	    header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view='.$_REQUEST['view'].'');
+	    header('Location: http://10.118.247.229/trabajos_programados/index.php?view='.$_REQUEST['view'].'');
 	}
 
 	if ($accion === 'asignar'){ //PROCEDIMIENTO PARA ASIGNAR UNA SOLICITUD AL USUARIO SSR
@@ -398,7 +398,7 @@
 		sqlsrv_free_stmt($sql1);
 		sqlsrv_free_stmt($insert);
 		sqlsrv_close($conexion);
-		/*header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=2');*/
+		/*header('Location: http://10.118.247.229/trabajos_programados/index.php?view=2');*/
 		echo '<script type="text/javascript">';
 			echo "window.opener.document.getElementById('btnfiltrar').click();";
 			echo 'window.close();';
@@ -530,7 +530,7 @@
 		if ($estado = 'Pendiente Info' || $estado = 'Rechazado'){
 			envioCambio($_REQUEST['solicitud']);
 		}
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_cab') { //PROCEDIMIENTO PARA ACTUALIZAR DATOS DE SOLICITUDES PENDIENTES DE CAB
@@ -548,7 +548,7 @@
 		sqlsrv_free_stmt($query1);
 		sqlsrv_free_stmt($query2);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_ejec') { //PROCEDIMIENTO PARA ACTUALIZAR DATOS DE SOLICITUDES PENDIENTES DE EJECUCIÓN
@@ -582,7 +582,7 @@
 		$query = sqlsrv_query($conn,$update) or die ('Fallo al intentar actualizar resultados de ejecución rev <br>'.$update);
 		sqlsrv_free_stmt($query);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	//PROCESOS DE CONFIGURACIÓN DE LA APLICACIÓN
@@ -623,7 +623,7 @@
 		}
 		sqlsrv_free_stmt($query_usu);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_usu'){
@@ -683,7 +683,7 @@
 		}
 		sqlsrv_free_stmt($query);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'eliminar_usu'){
@@ -695,7 +695,7 @@
 		sqlsrv_free_stmt($qborrar);
 		sqlsrv_free_stmt($qborrar_provincias);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=51');
+		header('Location: http://10.118.247.229/trabajos_programados/index.php?view=51');
 	}
 
 	//-----------------------------------------
@@ -711,7 +711,7 @@
 		$query_prov = sqlsrv_query($conn,$insert_prov) or die ('Fallo al intentar insertar una nueva provincia <br>'.$insert_prov);
 		sqlsrv_free_stmt($query_prov);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_prov'){
@@ -739,7 +739,7 @@
 		$query = sqlsrv_query($conn,$update) or die ('Fallo al intentar actualizar la provincia seleccionada'.$msg_error.'<br>'.$update);
 		sqlsrv_free_stmt($query);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'eliminar_prov'){
@@ -748,7 +748,7 @@
 		$qborrar = sqlsrv_query($conn,$borrar);
 		sqlsrv_free_stmt($qborrar);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=52');
+		header('Location: http://10.118.247.229/trabajos_programados/index.php?view=52');
 	}
 
 	//-----------------------------------------
@@ -763,7 +763,7 @@
 		$query_cent = sqlsrv_query($conn,$insert_cent) or die ('Fallo al intentar insertar una nueva central <br>'.$insert_cent);
 		sqlsrv_free_stmt($query_cent);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_cent'){
@@ -786,7 +786,7 @@
 		$query = sqlsrv_query($conn,$update) or die ('Fallo al intentar actualizar la central seleccionada'.$msg_error.'<br>'.$update);
 		sqlsrv_free_stmt($query);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'eliminar_cent'){
@@ -795,7 +795,7 @@
 		$qborrar = sqlsrv_query($conn,$borrar);
 		sqlsrv_free_stmt($qborrar);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=53');
+		header('Location: http://10.118.247.229/trabajos_programados/index.php?view=53');
 	}
 
 	$cod_resp = $_POST['cod_resp'];
@@ -808,7 +808,7 @@
 		$query_resp = sqlsrv_query($conn,$insert_resp) or die ('Fallo al intentar insertar el nuevo responsable <br>'.$insert_resp);
 		sqlsrv_free_stmt($query_resp);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'actualizar_resp'){
@@ -831,7 +831,7 @@
 		$query = sqlsrv_query($conn,$update) or die ('Fallo al intentar actualizar el responsable seleccionado'.$msg_error.'<br>'.$update);
 		sqlsrv_free_stmt($query);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/fin_proceso.php');
+		header('Location: http://10.118.247.229/trabajos_programados/forms/fin_proceso.php');
 	}
 
 	if ($accion == 'eliminar_resp'){
@@ -840,7 +840,7 @@
 		$qborrar = sqlsrv_query($conn,$borrar);
 		sqlsrv_free_stmt($qborrar);
 		sqlsrv_close($conn);
-		header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=54');
+		header('Location: http://10.118.247.229/trabajos_programados/index.php?view=54');
 	}
 
 	if ($accion == 'enviar_todo'){
@@ -863,7 +863,7 @@
 			if (unlink($ruta.'/'.$nombre_file)) {
 				sqlsrv_free_stmt($query_delete_file);
 				sqlsrv_close($conexion);
-				header('Location: http://ftth-dst.jazztel.com/trabajos_programados/forms/consulta_solicitud.php?jobcode='.$cod_trabajo_file.'&mode='.$modo);
+				header('Location: http://10.118.247.229/trabajos_programados/forms/consulta_solicitud.php?jobcode='.$cod_trabajo_file.'&mode='.$modo);
 			} else {
 				die ("No se ha podido borrar el fichero del servidor");
 			}

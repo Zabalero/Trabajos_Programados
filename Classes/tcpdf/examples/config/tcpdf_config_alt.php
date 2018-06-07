@@ -114,7 +114,7 @@ define ('PDF_HEADER_TITLE', 'Solicitud de trabajo');
 /**
  * Header description string.
  */
-define ('PDF_HEADER_STRING', "SSR\nhttp://ftth-dst.jazztel.com/trabajos_programados/");
+define ('PDF_HEADER_STRING', "SSR\nhttp://10.118.247.229/trabajos_programados/");
 
 /**
  * Document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch].
