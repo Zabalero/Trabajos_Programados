@@ -125,22 +125,6 @@ function get_idusuario($usuario){
 	return $codigo;
 }
 
-function get_provincias($usuario){
-	$conn=conectar_bd();
-	$tsql="SELECT COD_PROVINCIA FROM tbUSUARIOS_PROVINCIAS WHERE COD_USUARIO =".$usuario;
-	$stmt = sqlsrv_query( $conn, $tsql);
-	if( $stmt === false ){
-		die ("Error al ejecutar consulta");
-	}
-	while($row = sqlsrv_fetch_array($stmt)){	
-		$provincia.= $row["COD_PROVINCIA"].",";
-	}
-	$provincias = rtrim($provincia,',');
-	sqlsrv_free_stmt( $stmt);
-	sqlsrv_close( $conn);
-	return $provincias;
-}
-
 function replace_specials_characters($s) {
 	//$s = mb_convert_encoding($s, 'UTF-8','');
 	$s = preg_replace("/á|à|â|ã|ª/","a",$s);
@@ -216,21 +200,9 @@ function vXd($valor) {
 }
 
 function getIdent($central){
-	$tsql = "SELECT TOP 1 SUBSTRING(RTRIM(IDENTIFICADOR),3,6) AS INICT, 
-					RIGHT(RTRIM(IDENTIFICADOR),4) AS IDENTIFICADOR,
-					(SELECT tbProvincias.INICIALES 
-					FROM tbProvincias 
-					LEFT JOIN tbCentrales ON tbProvincias.COD_PROVINCIA = tbCentrales.COD_PROVINCIA 
-					WHERE tbCentrales.COD_CENTRAL = ".$central.") AS INI 
-			FROM tbTrabajos_Solicitados 
-			WHERE IDENTIFICADOR <> '' 
-				  AND LEN(IDENTIFICADOR) = 12 
-		 	ORDER BY SUBSTRING(RTRIM(IDENTIFICADOR),3,10) DESC";
+	$tsql = "SELECT TOP 1 SUBSTRING(RTRIM(IDENTIFICADOR),3,6) AS INICT, RIGHT(RTRIM(IDENTIFICADOR),4) AS IDENTIFICADOR,(SELECT tbProvincias.INICIALES FROM tbProvincias LEFT JOIN tbCentrales ON tbProvincias.COD_PROVINCIA = tbCentrales.COD_PROVINCIA WHERE tbCentrales.COD_CENTRAL = ".$central.") AS INI FROM tbTrabajos_Solicitados WHERE IDENTIFICADOR <> '' AND LEN(IDENTIFICADOR) = 12 ORDER BY SUBSTRING(RTRIM(IDENTIFICADOR),3,10) DESC";
 	if (empty($tsql)){
-		 $tsql = "SELECT tbProvincias.INICIALES AS INI 
-		 		  FROM tbProvincias 
-		 		  LEFT JOIN tbCentrales ON tbProvincias.COD_PROVINCIA = tbCentrales.COD_PROVINCIA 
-		 		  WHERE tbCentrales.COD_CENTRAL = ".$central.""; 
+		 $tsql = "SELECT tbProvincias.INICIALES AS INI FROM tbProvincias LEFT JOIN tbCentrales ON tbProvincias.COD_PROVINCIA = tbCentrales.COD_PROVINCIA WHERE tbCentrales.COD_CENTRAL = ".$central.""; 
 	}
 	$conn=conectar_bd();
 	$query = sqlsrv_query( $conn, $tsql);
@@ -288,7 +260,7 @@ function envioCambio($cod_trabajo) {
 		$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		$headers .= "From: Notificación de solicitudes <ssr@jazztel.com>\r\n"; 
 		$headers .= "Return-path: ".$email."\r\n"; 
-		 $headers .= "Cc: carlosjose.fernandez@orange.com\r\n";
+		$headers .= "Cc: daniel.coronel@jazztel.com\r\n"; 
 		mail($email,$asunto,$cuerpo,$headers); 
 		$tsql = "UPDATE TBHISTORICO_TRABAJOS SET CORREO_ENVIADO = 1 WHERE COD_TRABAJO = ".$cod_trabajo." AND UPPER(ESTADO_TP) IN ('ANULADO', 'RECHAZADO', 'CANCELADO', 'PENDIENTE INFO') AND CORREO_ENVIADO = 0";
 		$query = sqlsrv_query( $conn, $tsql);
@@ -302,7 +274,7 @@ function envioCambio($cod_trabajo) {
 		$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		$headers .= "From: Notificación de solicitudes <ssr@jazztel.com>\r\n"; 
 		$headers .= "Return-path: ".$email."\r\n"; 
-		$headers .= "Cc: carlosjose.fernandez@orange.com\r\n";
+		$headers .= "Cc: daniel.coronel@jazztel.com\r\n"; 
 		mail($email,$asunto,$cuerpo,$headers); 
 		$tsql = "UPDATE TBHISTORICO_TRABAJOS SET CORREO_ENVIADO = 1 WHERE COD_TRABAJO = ".$cod_trabajo." AND UPPER(ESTADO_TP) IN ('ANULADO', 'RECHAZADO', 'CANCELADO', 'PENDIENTE INFO') AND CORREO_ENVIADO = 0";
 		$query = sqlsrv_query( $conn, $tsql);
@@ -316,7 +288,7 @@ function envioCambio($cod_trabajo) {
 		$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		$headers .= "From: Notificación de solicitudes <ssr@jazztel.com>\r\n"; 
 		$headers .= "Return-path: ".$email."\r\n"; 
-		$headers .= "Cc: carlosjose.fernandez@orange.com\r\n";
+		$headers .= "Cc: daniel.coronel@jazztel.com\r\n"; 
 		mail($email,$asunto,$cuerpo,$headers); 
 		$tsql = "UPDATE TBHISTORICO_TRABAJOS SET CORREO_ENVIADO = 1 WHERE COD_TRABAJO = ".$cod_trabajo." AND UPPER(ESTADO_TP) IN ('ANULADO', 'RECHAZADO', 'CANCELADO', 'PENDIENTE INFO') AND CORREO_ENVIADO = 0";
 		$query = sqlsrv_query( $conn, $tsql);
@@ -331,7 +303,7 @@ function envioCambio($cod_trabajo) {
 		$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		$headers .= "From: Notificación de solicitudes <ssr@jazztel.com>\r\n"; 
 		$headers .= "Return-path: ".$email."\r\n"; 
-		$headers .= "Cc: carlosjose.fernandez@orange.com\r\n";
+		$headers .= "Cc: daniel.coronel@jazztel.com\r\n"; 
 		mail($email,$asunto,$cuerpo,$headers); 
 		$tsql = "UPDATE TBHISTORICO_TRABAJOS SET CORREO_ENVIADO = 1 WHERE COD_TRABAJO = ".$cod_trabajo." AND UPPER(ESTADO_TP) IN ('ANULADO', 'RECHAZADO', 'CANCELADO', 'PENDIENTE INFO') AND CORREO_ENVIADO = 0";
 		$query = sqlsrv_query( $conn, $tsql);
@@ -341,10 +313,7 @@ function envioCambio($cod_trabajo) {
 
 function Envio_Aceptado() {
 	$asunto = "NOTIFICACIÓN DE SOLICITUDES DE TRABAJOS ACEPTADOS";
-	$tsql = "SELECT TBUSUARIOS.COD_USUARIO, 
-					TBUSUARIOS.NOMBRE_COMPLETO, 
-					TBUSUARIOS.EMAIL 
-			FROM (TBUSUARIOS INNER JOIN TBTRABAJOS_SOLICITADOS ON TBUSUARIOS.COD_USUARIO = TBTRABAJOS_SOLICITADOS.COD_USUARIO_CARGA) INNER JOIN TBHISTORICO_TRABAJOS ON tbTrabajos_Solicitados.COD_TRABAJO = TBHISTORICO_TRABAJOS.COD_TRABAJO WHERE TBHISTORICO_TRABAJOS.ESTADO_TP = 'Aceptado' AND TBHISTORICO_TRABAJOS.CORREO_ENVIADO IS NULL GROUP BY TBUSUARIOS.COD_USUARIO, TBUSUARIOS.NOMBRE_COMPLETO, TBUSUARIOS.EMAIL";
+	$tsql = "SELECT TBUSUARIOS.COD_USUARIO, TBUSUARIOS.NOMBRE_COMPLETO, TBUSUARIOS.EMAIL FROM (TBUSUARIOS INNER JOIN TBTRABAJOS_SOLICITADOS ON TBUSUARIOS.COD_USUARIO = TBTRABAJOS_SOLICITADOS.COD_USUARIO_CARGA) INNER JOIN TBHISTORICO_TRABAJOS ON tbTrabajos_Solicitados.COD_TRABAJO = TBHISTORICO_TRABAJOS.COD_TRABAJO WHERE TBHISTORICO_TRABAJOS.ESTADO_TP = 'Aceptado' AND TBHISTORICO_TRABAJOS.CORREO_ENVIADO IS NULL GROUP BY TBUSUARIOS.COD_USUARIO, TBUSUARIOS.NOMBRE_COMPLETO, TBUSUARIOS.EMAIL";
 	$conn=conectar_bd();
 	$query = sqlsrv_query( $conn, $tsql);
 	if( $query === false ){
@@ -366,7 +335,7 @@ function Envio_Aceptado() {
 				   convert(char,tbTrabajos_Revisados.FX_APROBADA_INICIO,108) as horaini,
 				   convert(char,tbTrabajos_Revisados.FX_APROBADA_FIN,103) as fechafin,
 				   convert(char,tbTrabajos_Revisados.FX_APROBADA_FIN,108) as horafin,
-				   datepart(iso_week,tbTrabajos_Revisados.FX_APROBADA_INICIO) as semana 
+				   datepart(week,tbTrabajos_Revisados.FX_APROBADA_INICIO) as semana 
 			FROM tbTrabajos_Solicitados 
 			INNER JOIN tbHistorico_Trabajos ON tbTrabajos_Solicitados.COD_TRABAJO = tbHistorico_Trabajos.COD_TRABAJO
 			INNER JOIN tbTrabajos_Revisados ON tbTrabajos_Solicitados.COD_TRABAJO = tbTrabajos_Revisados.COD_TRABAJO
@@ -389,7 +358,7 @@ function Envio_Aceptado() {
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Hora de inicio aprobada:'.$row2["horaini"].'</p>';
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Fecha fin aprobada:'.$row2["fechafin"].'</p>';
 			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;">Hora fin aprobada:'.$row2["horafin"].'</p>';
-			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;"><a href="http://10.118.247.229/trabajos_programados/functions/genera_pdf.php?jobcode='.$row2['COD_TRABAJO'].'" target="_blank">Descargar PDF del trabajo</a></p><br>';
+			$cuerpo=$cuerpo.'<p style="color: #595959;font-size: 11px;font-family: "Calibri",sans-serif;"><a href="http://ftth-dst.jazztel.com/trabajos_programados/functions/genera_pdf.php?jobcode='.$row2['COD_TRABAJO'].'" target="_blank">Descargar PDF del trabajo</a></p><br>';
 			$update = "UPDATE tbHistorico_Trabajos SET CORREO_ENVIADO = 1, COD_USUARIO = ".$_SESSION['privi']." WHERE COD_TRABAJO = ".$row2['COD_TRABAJO']." AND ESTADO_TP = 'Aceptado' AND CORREO_ENVIADO IS NULL";
 			$query3 = sqlsrv_query($conn,$update) or die ('fallo al intentar actualizar el historico'.$update);
 		}
@@ -398,14 +367,14 @@ function Envio_Aceptado() {
 		$headers = "MIME-Version: 1.0\r\n"; 
 		$headers .= "Content-type: text/html; charset=UTF-8\r\n"; 
 		$headers .= "From: SSR <ssr@jazztel.com>\r\n";
-		$headers .= "Cc: carlosjose.fernandez@orange.com\r\n";
+		$headers .= "Cc: daniel.coronel@jazztel.com\r\n"; 
 		$headers .= "Return-path: ".$email."\r\n"; 
 		mail($email,$asunto,$cuerpo,$headers);
 	}
 	sqlsrv_free_stmt( $query);
 	sqlsrv_free_stmt( $query2);
 	sqlsrv_free_stmt( $query3);
-	header('Location: http://10.118.247.229/trabajos_programados/index.php?view=7');
+	header('Location: http://ftth-dst.jazztel.com/trabajos_programados/index.php?view=7');
 }
 
 //Envio_Aceptado();
